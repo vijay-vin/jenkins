@@ -1,13 +1,13 @@
 name: Post Deployment Status Link
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
 
 # Without this, GitHub may reject the commit status POST!
 permissions:
   statuses: write        # allow posting commit statuses
-  # contents: read       
+  contents: read       
 
 jobs:
   post-status:
@@ -19,8 +19,11 @@ jobs:
           echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
           echo "COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
           echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+          echo "REPO_FULL=${{ github.repository }}" >> $GITHUB_ENV
+          #  echo "HEAD_REPO_FULL=${{ github.event.pull_request.head.repo.full_name }}" >> $GITHUB_ENV
 
       - name: Build Jenkins Deployment URL
+        shell: bash
         run: |
           # Jenkins job users will click to open "Build with Parameters"
           # JOB_NAME="vj-ai-services-pr-listener"
@@ -34,8 +37,14 @@ jobs:
           # pass this to downstream pipeline, so that it can update the check status if needed
           UPDATE_STATUS=true
 
+          # Add encoding
+          COMMIT_Q=$(printf %s "$COMMIT_SHA" | jq -sRr @uri)     
+          PR_Q=$(printf %s "$PR_NUMBER" | jq -sRr @uri)
+          APP_Q=$(printf %s "$APP_LIST" | jq -sRr @uri)
+          REPO_Q=$(printf %s "$REPO_FULL" | jq -sRr @uri)
+   
           # Construct Jenkins Build-with-Parameters URL
-          DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?COMMIT=${COMMIT_SHA}&CHECKOUT=${PR_NUMBER}&ApplicationList=${APP_LIST}&updateGitStatus=${UPDATE_STATUS}"
+          DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?COMMIT=${COMMIT_Q}&CHECKOUT=${PR_Q}&ApplicationList=${APP_Q}&REPO_FULL=${REPO_Q}&updateGitStatus=${UPDATE_STATUS}"
 
           echo "DEPLOY_URL=${DEPLOY_URL}" >> $GITHUB_ENV
           echo "Generated Deployment URL: ${DEPLOY_URL}"
