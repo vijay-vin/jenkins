@@ -19,7 +19,7 @@ jobs:
           echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
           echo "COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
           echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
-          echo BASE_"REPO_FULL=${{ github.repository }}" >> $GITHUB_ENV
+          echo "BASE_REPO_FULL=${{ github.repository }}" >> $GITHUB_ENV
           echo "HEAD_REPO_FULL=${{ github.event.pull_request.head.repo.full_name }}" >> $GITHUB_ENV
 
       - name: Build Jenkins Deployment URL
