@@ -20,7 +20,7 @@ jobs:
           echo "COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
           echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
           echo "REPO_FULL=${{ github.repository }}" >> $GITHUB_ENV
-          #  echo "HEAD_REPO_FULL=${{ github.event.pull_request.head.repo.full_name }}" >> $GITHUB_ENV
+          echo "HEAD_REPO_FULL=${{ github.event.pull_request.head.repo.full_name }}" >> $GITHUB_ENV
 
       - name: Build Jenkins Deployment URL
         shell: bash
@@ -42,9 +42,10 @@ jobs:
           PR_Q=$(printf %s "$PR_NUMBER" | jq -sRr @uri)
           APP_Q=$(printf %s "$APP_LIST" | jq -sRr @uri)
           REPO_Q=$(printf %s "$REPO_FULL" | jq -sRr @uri)
+          HEAD_REPO_Q=$(printf %s "$HEAD_REPO_FULL" | jq -sRr @uri)
    
           # Construct Jenkins Build-with-Parameters URL
-          DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?COMMIT=${COMMIT_Q}&CHECKOUT=${PR_Q}&ApplicationList=${APP_Q}&REPO_FULL=${REPO_Q}&updateGitStatus=${UPDATE_STATUS}"
+          DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?COMMIT=${COMMIT_Q}&CHECKOUT=${PR_Q}&ApplicationList=${APP_Q}&REPO_FULL=${REPO_Q}&HEAD_REPO_FULL=${HEAD_REPO_Q}&updateGitStatus=${UPDATE_STATUS}"
 
           echo "DEPLOY_URL=${DEPLOY_URL}" >> $GITHUB_ENV
           echo "Generated Deployment URL: ${DEPLOY_URL}"
