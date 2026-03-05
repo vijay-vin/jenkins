@@ -48,8 +48,7 @@ jobs:
           HEAD_REPO_Q=$(printf %s "$HEAD_REPO_FULL" | jq -sRr @uri)
    
           # Construct Jenkins Build-with-Parameters URL
-          # DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?COMMIT=${COMMIT_Q}&CHECKOUT=${PR_Q}&ApplicationList=${APP_Q}&BASE_REPO_FULL=${BASE_REPO_Q}&HEAD_REPO_FULL=${HEAD_REPO_Q}&updateGitStatus=${UPDATE_STATUS}"
-          DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/buildiWithParameters/?COMMIT=${COMMIT_Q}&CHECKOUT=${PR_Q}&ApplicationList=${APP_Q}&BASE_REPO_FULL=${BASE_REPO_Q}&HEAD_REPO_FULL=${HEAD_REPO_Q}&updateGitStatus=${UPDATE_STATUS}"
+          DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?COMMIT=${COMMIT_Q}&CHECKOUT=${PR_Q}&ApplicationList=${APP_Q}&BASE_REPO_FULL=${BASE_REPO_Q}&HEAD_REPO_FULL=${HEAD_REPO_Q}&updateGitStatus=${UPDATE_STATUS}"
 
           echo "DEPLOY_URL=${DEPLOY_URL}" >> $GITHUB_ENV
           echo "Generated Deployment URL: ${DEPLOY_URL}"
