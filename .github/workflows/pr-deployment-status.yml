@@ -28,8 +28,11 @@ jobs:
           # Jenkins job users will click to open "Build with Parameters"
           # JOB_NAME="vj-ai-services-pr-listener"
           # JOB_NAME="vijayv_pipelines/vj-pr-preview-pipeline-copy"
-          JOB_NAME="vijayv/job/vj-pr-preview-pipeline-copy"
-          JENKINS_URL="http://10.20.178.84:8080"
+          # JOB_NAME="vijayv/job/vj-pr-preview-pipeline-copy"
+          # JENKINS_URL="http://10.20.178.84:8080"
+
+          JOB_NAME="ai-services/job/Vijayv/job/vj-pr-preview-pipeline-JWT"
+          JENKINS_URL="https://sys-powercloud-team-jenkins.swg-devops.com"
 
           # Default ApplicationList value
           APP_LIST="rag-dev"
