@@ -21,7 +21,8 @@ jobs:
         run: |
           # Jenkins job users will click to open "Build with Parameters"
 
-          JOB_NAME="ai-services/job/pr-preview-pipeline"
+          #JOB_NAME="ai-services/job/pr-preview-pipeline"
+          JOB_NAME="ai-services/job/Vijayv/job/vj-pr-preview-pipeline-JWT"
           JENKINS_URL="https://sys-powercloud-team-jenkins.swg-devops.com"
 
           # Default ApplicationList value
