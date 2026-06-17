@@ -21,8 +21,7 @@ jobs:
         run: |
           # Jenkins job users will click to open "Build with Parameters"
 
-          #JOB_NAME="ai-services/job/pr-preview-pipeline"
-          JOB_NAME="ai-services/job/Vijayv/job/vj-pr-preview-pipeline-JWT"
+          JOB_NAME="ai-services/job/pr-preview-pipeline"
           JENKINS_URL="https://sys-powercloud-team-jenkins.swg-devops.com"
 
           # Default ApplicationList value
@@ -34,7 +33,8 @@ jobs:
    
           # Construct Jenkins Build-with-Parameters URL
           # updateGitStatus=true allows downstream Jenkins pipeline to post/update GitHub status
-          DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?CHECKOUT=${ENCODED_PR}&ApplicationList=${ENCODED_APP}&updateGitStatus=true"
+          # VVVV DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?CHECKOUT=${ENCODED_PR}&ApplicationList=${ENCODED_APP}&updateGitStatus=true"
+          DEPLOY_URL="${JENKINS_URL}/job/${JOB_NAME}/parambuild/?CHECKOUT=${ENCODED_PR}&DEPLOY_APP=${ENCODED_APP}"
 
           echo "DEPLOY_URL=${DEPLOY_URL}" >> $GITHUB_ENV
           echo "Generated Deployment URL: ${DEPLOY_URL}"
