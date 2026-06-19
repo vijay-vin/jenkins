@@ -7,6 +7,7 @@ on:
 # Without this, GitHub may reject the commit status POST!
 permissions:
   statuses: write        # allow posting commit statuses
+  checks: write          # allow creating check runs
   contents: read       
 
 jobs:
@@ -50,22 +51,22 @@ jobs:
           echo "Creating Check Run..."
 
           curl -sS -X POST \
-                   -H "Authorization: Bearer ${GH_TOKEN}" \
-                   -H "Accept: application/vnd.github+json" \
-                   https://api.github.com/repos/${REPO}/check-runs \
-                   -d @- <<EOF
-                   {
-                     "name": "Manual Deployment",
-                     "head_sha": "${COMMIT_SHA}",
-                     "status": "completed",
-                     "conclusion": "neutral",
-                     "details_url": "${DEPLOY_URL}",
-                     "output": {
-                        "title": "Manual Deployment Required",
-                        "summary": "Click to open Jenkins → Build with Parameters"
-                     }
-                   }
-                   EOF
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${REPO}/check-runs \
+            -d @- <<EOF
+          {
+            "name": "Manual Deployment",
+            "head_sha": "${COMMIT_SHA}",
+            "status": "completed",
+            "conclusion": "neutral",
+            "details_url": "${DEPLOY_URL}",
+            "output": {
+              "title": "Manual Deployment Required",
+              "summary": "Click to open Jenkins → Build with Parameters"
+            }
+          }
+          EOF
 
           echo "Check Run created successfully."
 
