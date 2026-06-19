@@ -51,22 +51,29 @@ jobs:
           echo "Creating Check Run..."
           echo "DEPLOY_URL is: ${DEPLOY_URL}"
 
+          # Create JSON payload with proper variable substitution
+          JSON_PAYLOAD=$(cat <<EOF
+          {
+            "name": "Manual Deployment",
+            "head_sha": "${COMMIT_SHA}",
+            "status": "completed",
+            "conclusion": "neutral",
+            "details_url": "${DEPLOY_URL}",
+            "output": {
+              "title": "Manual Deployment Required",
+              "summary": "[Click to open Jenkins → Build with Parameters](${DEPLOY_URL})"
+            }
+          }
+          EOF
+          )
+
+          echo "JSON Payload: ${JSON_PAYLOAD}"
+
           curl -sS -X POST \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${REPO}/check-runs \
-            -d "{
-              \"name\": \"Manual Deployment\",
-              \"head_sha\": \"${COMMIT_SHA}\",
-              \"status\": \"completed\",
-              \"conclusion\": \"neutral\",
-              \"details_url\": \"${DEPLOY_URL}\",
-              \"output\": {
-                \"title\": \"Manual Deployment Required\",
-                \"summary\": \"[Click to open Jenkins → Build with Parameters](${DEPLOY_URL})\"
-              }
-            }"
+            -d "${JSON_PAYLOAD}"
 
           echo "Check Run created successfully."
 
-# Made with Bob
