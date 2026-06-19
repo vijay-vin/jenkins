@@ -1,4 +1,4 @@
-name: Post Deployment Status Link
+name: Post Deployment Link
 
 on:
   pull_request_target:
@@ -54,7 +54,7 @@ jobs:
           # Create JSON payload with proper variable substitution
           JSON_PAYLOAD=$(cat <<EOF
           {
-            "name": "Manual Deployment",
+            "name": "Jenkins Manual Deployment",
             "head_sha": "${COMMIT_SHA}",
             "status": "completed",
             "conclusion": "neutral",
