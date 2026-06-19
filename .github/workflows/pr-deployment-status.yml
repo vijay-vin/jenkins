@@ -49,24 +49,23 @@ jobs:
           DEPLOY_URL: ${{ env.DEPLOY_URL }}
         run: |
           echo "Creating Check Run..."
+          echo "DEPLOY_URL is: ${DEPLOY_URL}"
 
           curl -sS -X POST \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${REPO}/check-runs \
-            -d @- <<EOF
-          {
-            "name": "Manual Deployment",
-            "head_sha": "${COMMIT_SHA}",
-            "status": "completed",
-            "conclusion": "neutral",
-            "details_url": "${DEPLOY_URL}",
-            "output": {
-              "title": "Manual Deployment Required",
-              "summary": "Click to open Jenkins → Build with Parameters"
-            }
-          }
-          EOF
+            -d "{
+              \"name\": \"Manual Deployment\",
+              \"head_sha\": \"${COMMIT_SHA}\",
+              \"status\": \"completed\",
+              \"conclusion\": \"neutral\",
+              \"details_url\": \"${DEPLOY_URL}\",
+              \"output\": {
+                \"title\": \"Manual Deployment Required\",
+                \"summary\": \"[Click to open Jenkins → Build with Parameters](${DEPLOY_URL})\"
+              }
+            }"
 
           echo "Check Run created successfully."
 
